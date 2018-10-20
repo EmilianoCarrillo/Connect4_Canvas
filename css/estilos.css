@@ -1,0 +1,71 @@
+/*
+    ROJO: #eb3b5a
+    AZUL: #3867d6
+    AMARILLO: #f7b731
+*/
+
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
+body {
+    font-family: monospace;
+}
+
+#Wrapper {
+    text-align: center;
+    /*background: rgba(20, 100, 45, .3);*/
+    position: absolute;
+    top: 50vh;
+    left: 50vw;
+    transform: translate(-50%, -50%);
+}
+
+h1 {
+    font-size: 3em;
+    color: black;
+    margin: 20px 0;
+}
+
+#Tablero {
+    position: absolute;
+    width: 75vw;
+    height: 75vw;
+    max-width: 30em;
+    max-height: 30em;
+    display: block;
+    cursor: pointer;
+    background: transparent;
+    transform: translateY(-100%);
+}
+
+#Juego{
+    display: block;
+    position: relative;
+    width: 75vw;
+    height: 75vw;
+    max-width: 30em;
+    max-height: 30em;
+}
+
+#Reiniciar {
+    width: 100px;
+    height: 50px;
+    border: 0px;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2em;
+    background: #8854d0;
+    border-radius: .2em;
+    box-shadow: 0px 0px 2px black;
+    margin: 20px 0;
+    cursor: pointer;
+}
+
+#Reiniciar:hover {
+    background: white;
+    color: #8854d0;
+    border: 1px solid #8854d0;
+    
+}
