@@ -67,6 +67,11 @@ function getMousePos(evt) {
 }
 
 tablero.addEventListener('click', function (evt) {
+  //Poner un rectangulo blanco hasta arriba
+  ctx.beginPath();
+  ctx.fillStyle = "white";
+  ctx.fillRect(0,0,celda*7, celda);
+  ctx.stroke();
   var mousePos = getMousePos(evt);
   for (var i = 0; i < tablero.width; i += celda) {
     if (mousePos.x > i && mousePos.x < i + celda) {
@@ -188,3 +193,21 @@ function cambiarTurno(){
 reiniciarBtn.addEventListener('click', function () {
   location.reload();
 });
+
+// Animar ficha on hover
+function efectoHover(event){
+  color = (turno == 1 ? '#eb3b5a': '#f7b731');
+  var mousePos = getMousePos(event);
+  var x = parseInt(mousePos.x/100);
+  ctx.beginPath();
+  ctx.fillStyle = "white";
+  ctx.fillRect(0,0,celda*7, celda);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.strokeStyle = "white";
+  ctx.arc(x*celda+ mitadCelda, mitadCelda, 35, 0, Math.PI * 2, true);
+  ctx.fillStyle = color;
+  ctx.lineWidth = 0;
+  ctx.fill();
+  ctx.stroke();
+}
