@@ -110,7 +110,6 @@ function yaGanoAlguien(xFicha, yFicha){
   for(var i=0;i<8;i+=2){
     var lado1=fCount(dx[i],dy[i],xFicha+dy[i],yFicha+dx[i],valorFicha);
     var lado2=fCount(dx[i+1],dy[i+1],xFicha+dy[i+1],yFicha+dx[i+1],valorFicha);
-  
     if(lado1+lado2+1==4)
       return true; 
   }  
