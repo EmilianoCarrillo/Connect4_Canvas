@@ -6,6 +6,9 @@ var ctxGame = canvasGame.getContext('2d');
 
 var alertaGanador = document.getElementById("Alerta");
 
+var dx=[ 1,-1, 0, 0, 1,-1, 1,-1];
+var dy=[ 0, 0, 1,-1,-1, 1, 1,-1];
+
 var celda = 100;
 var mitadCelda = celda / 2;
 tablero.height = celda * 7;
@@ -94,102 +97,24 @@ function llenarColumna(numCol){
   return numFila;
 }
 
+function fCount(mx,my,columna,fila,valorFicha){
+  if(fila<0 || fila>6 || columna<0 || columna>5)
+    return 0;
+  if(matriz[columna][fila]!=valorFicha)
+    return 0;
+  return 1 + fCount(mx,my,columna+my,fila+mx,valorFicha);
+}
+
 function yaGanoAlguien(xFicha, yFicha){
-  var centro = matriz[xFicha][yFicha];
+  var valorFicha = matriz[xFicha][yFicha];
+  for(var i=0;i<8;i+=2){
+    var lado1=fCount(dx[i],dy[i],xFicha+dy[i],yFicha+dx[i],valorFicha);
+    var lado2=fCount(dx[i+1],dy[i+1],xFicha+dy[i+1],yFicha+dx[i+1],valorFicha);
   
-  // CASO C
-  for(var y = yFicha+1; y <= yFicha+3; y++){
-    if(matriz[xFicha][y] != centro) break;
-    if(y == yFicha+3) return 'C';
-  }
-
-  // CASO B
-  for(var x = xFicha+1; x <= xFicha+3; x++){
-    try{
-      if(matriz[x][yFicha] === undefined){
-        throw error;
-      }
-    }catch(error){
-      break;
-    }
-    if(matriz[x][yFicha] != centro) break;
-    if(x == xFicha+3) return 'B';
-  }
-
-  // CASO D
-  for(var x = xFicha-1; x >= xFicha-3; x--){
-    try{
-      if(matriz[x][yFicha] === undefined){
-        throw error;
-      }
-    }catch(error){
-      break;
-    }
-    if(matriz[x][yFicha] != centro) break;
-    if(x == xFicha-3) return 'D';
-  }
-
-  //CASO H
-  var i = 1;
-  while(i <= 3){
-    try{
-      if(matriz[xFicha+i][yFicha-i] === undefined){
-        throw error;
-      }
-    }catch(error){
-      break;
-    }
-    if(matriz[xFicha+i][yFicha-i] != centro) break;
-    if(i == 3) return 'H';
-    i++;
-  }
-
-  //CASO G
-  var i = 1;
-  while(i <= 3){
-    try{
-      if(matriz[xFicha-i][yFicha-i] === undefined){
-        throw error;
-      }
-    }catch(error){
-      break;
-    }
-    if(matriz[xFicha-i][yFicha-i] != centro) break;
-    if(i == 3) return 'G';
-    i++;
-  }
-
-  //CASO E
-  var i = 1;
-  while(i <= 3){
-    try{
-      if(matriz[xFicha+i][yFicha+i] === undefined){
-        throw error;
-      }
-    }catch(error){
-      break;
-    }
-    if(matriz[xFicha+i][yFicha+i] != centro) break;
-    if(i == 3) return 'E';
-    i++;
-  }
-
-  //CASO F
-  var i = 1;
-  while(i <= 3){
-    try{
-      if(matriz[xFicha-i][yFicha+i] === undefined){
-        throw error;
-      }
-    }catch(error){
-      break;
-    }
-    if(matriz[xFicha-i][yFicha+i] != centro) break;
-    if(i == 3) return 'F';
-    i++;
-  }
-
-  return false;   
+    if(lado1+lado2+1==4)
+      return true; 
+  }  
+  return false;
 }
 
 /*
