@@ -53,6 +53,8 @@ for (var y = 100; y < 700; y += celda) {
   }
 }
 
+ctx.globalCompositeOperation = 'source-over';
+
 
 // IDENTIFICAR COLUMNA CLICKEADA
 function getMousePos(evt) {
@@ -78,9 +80,10 @@ tablero.addEventListener('click', function (evt) {
           tablero.style.pointerEvents = 'auto';
         }, 500);
       } else{
-        alertaGanador.style.display = "block";
-        alertaGanador.style.color = color;
-        alertaGanador.innerHTML = "GANÓ EL JUGADOR " + turno;
+        // alertaGanador.style.display = "block";
+        // alertaGanador.style.color = color;
+        // alertaGanador.innerHTML = "GANÓ EL JUGADOR " + turno;
+        colorearfichasGandoras();
       }
     }
   }
@@ -96,24 +99,57 @@ function llenarColumna(numCol){
   matriz[numCol][numFila] = turno;
   return numFila;
 }
-
+var posWinners=[[0,0],[0,0],[0,0],[0,0]];
 function fCount(mx,my,columna,fila,valorFicha){
-  if(fila<0 || fila>6 || columna<0 || columna>5)
+  if(fila<0 || fila>5 || columna<0 || columna>6)
     return 0;
   if(matriz[columna][fila]!=valorFicha)
     return 0;
   return 1 + fCount(mx,my,columna+my,fila+mx,valorFicha);
 }
+var posi=0;
+function fCount2(mx,my,columna,fila,valorFicha)
+{
+  if(fila<0 || fila>5 || columna<0 || columna>6)
+    return;
+  if(matriz[columna][fila]!=valorFicha)
+    return;
+  posWinners[posi] = [columna, fila];
+  posi++;
+  fCount2(mx,my,columna+my,fila+mx,valorFicha);
+}
 
 function yaGanoAlguien(xFicha, yFicha){
   var valorFicha = matriz[xFicha][yFicha];
   for(var i=0;i<8;i+=2){
+    
     var lado1=fCount(dx[i],dy[i],xFicha+dy[i],yFicha+dx[i],valorFicha);
     var lado2=fCount(dx[i+1],dy[i+1],xFicha+dy[i+1],yFicha+dx[i+1],valorFicha);
-    if(lado1+lado2+1==4)
+    if(lado1+lado2+1==4){
+      posi=0;
+      fCount2(dx[i],dy[i],xFicha+dy[i],yFicha+dx[i],valorFicha,posi);
+      fCount2(dx[i+1],dy[i+1],xFicha+dy[i+1],yFicha+dx[i+1],valorFicha,posi);
+      posWinners[posi]=[xFicha,yFicha];
       return true; 
+    }
   }  
   return false;
+}
+
+function colorearfichasGandoras(){
+  for(var i = 0; i<=3; i++){
+      var x=posWinners[i][0];
+      var y=posWinners[i][1];
+      console.log(x + " " + y);
+      ctx.beginPath();
+      ctx.arc(x*celda+mitadCelda, y*celda+celda+mitadCelda, 35, 0, Math.PI * 2, true);
+      ctx.lineWidth = 8;
+      ctx.strokeStyle = "#66FF33";
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.stroke();
+      ctx.closePath();
+  }
 }
 
 /*
